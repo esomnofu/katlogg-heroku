@@ -29,21 +29,20 @@ def news(arg, argz):
 
 	#To Get The Last File in Media Directory
 	path = arg
-	print("Path At Detect Changes is: ", path, " Directory added is /", argz)
+	# print("Path At Detect Changes is: ", path, " Directory added is /", argz)
 	#path = '/Users/DIAMONDSCRIPTS/Desktop/django/rest/media'
 
 	#Getting the last TXT Files
 	text_files = [f for f in os.listdir(path) if f.endswith('.txt')]
 	last = text_files[-1]
-	print("Last File to pass is", last)
+	# print("Last File to pass is", last)
 	
-	print(" Where we are finally looking at: ", os.path.join(arg, last))
+	print(" From Detect Changes .Py - Where we are finally looking at: ", os.path.join(arg, last))
 	#Loading the file up as a json so we can manipulate the Data
 	with open(os.path.join(arg, last)) as json_file:
 	# with open(os.path.join(settings.NON_STATIC_ROOT+argz, last)) as json_file:
 		data = json.load(json_file)
 		for p in data['product']:
-
 			product_name = p['name']
 			product_seller = p['seller']
 			product_old_price = p['old_price']

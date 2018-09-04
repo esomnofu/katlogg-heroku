@@ -276,13 +276,13 @@ def crawl(request):
 
 				#Argument One to Feed The News Function in General.py
 				arg = os.path.join(BASE_DIR +'/products/'+ crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
-				print("arg Argument 1 is: ", arg)
+				# print("arg Argument 1 is: ", arg)
 				
 				# arg = os.path.join('/Users/DIAMONDSCRIPTS/Desktop/katlogg/products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
 				
 				#Argument Two to Feed The News Function in General.py
 				argz = os.path.join('/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
-				print("argz Argzument 2 is: ", argz)
+				# print("argz Argzument 2 is: ", argz)
 
 				if not os.path.isfile(urls):
 					write_file(urls, '')
