@@ -1,0 +1,382 @@
+{% extends 'products/header.html' %}
+{% block title %} Add New Store {% endblock %}
+
+
+{% block content %}
+
+
+<div class="panel panel-success" style="margin-top: 20px">
+
+
+<div class="panel panel-heading">
+
+<h3 class="panel-title"> Add Store </h3>
+
+</div>
+
+<div class="panel panel-body">  
+
+
+
+<div class="panel panel-default">
+
+<div class="panel panel-heading">
+    <h3>Fill in the Xpaths For Store </h3>
+    <a class="btn btn-lg btn-success" href="{% url 'form' %}"> Back To Crawl Stores </a>
+</div>
+
+<div class="panel panel-body">
+    
+
+<form id="crawler_form" action="" method="POST">
+
+    {% csrf_token %}
+
+   <div class="form-group">
+
+        <div class="col-md-6">
+            <label>Website Name</label>
+            <input type="text" id="website_name" class="form-control" required />
+        </div>
+
+
+        <div class="col-md-6">
+            <label>Xpath to Major Categories</label>
+            <input type="text" id="major_url" class="form-control" required />
+        </div>
+
+    </div>
+
+    <div class="form-group">
+
+    	<div class="col-md-12">
+            <br>
+		    <label>Relay Links <small class="text-danger">(optional)</small></label>
+		    <input type="text" id="relay_links" class="form-control" />
+    	</div>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <div class="col-md-6">
+            <br>
+            <label>Concatenation Pattern </label>
+            <input type="text" id="pagination_index" class="form-control" />
+        </div>
+
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Products URL</label>
+            <input type="text" id="product_url" class="form-control" required />
+        </div>
+
+    </div>
+
+
+
+
+    <div class="form-group">
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Product Name </label>
+            <input type="text" id="product_name" class="form-control" required />
+        </div>
+
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Product Seller <small class="text-danger">(optional)</small></label>
+            <input type="text" id="product_seller" class="form-control" />
+        </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <div class="col-md-12">
+            <br>
+            <label>Product Colors <small class="text-danger">(optional)</small></label>
+            <input type="text" id="product_color" class="form-control" />
+        </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Product Current Price </label>
+            <input type="text" id="product_current_price" class="form-control" required />
+        </div>
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Product Old Price </label>
+            <input type="text" id="product_old_price" class="form-control" required />
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="form-group">
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Product Categories </label>
+            <input type="text" id="product_categories" class="form-control" required />
+        </div>
+
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Products Sizes</label>
+            <input type="text" id="product_sizes" class="form-control" required />
+        </div>
+
+    </div>
+
+
+
+
+    <div class="form-group">
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Percentage Off </label>
+            <input type="text" id="product_percentage_off" class="form-control" required />
+        </div>
+
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Products Images</label>
+            <input type="text" id="product_images" class="form-control" required />
+        </div>
+
+    </div>
+
+    <div class="form-group">
+
+        <div class="col-md-12">
+            <br>
+            <label>Xpath to Product Description</label>
+            <input type="text" id="product_description" class="form-control" required />
+        </div>
+
+    </div>
+
+
+
+    <div class="form-group">
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Product Filters </label>
+            <input type="text" id="product_filters" class="form-control" required />
+        </div>
+
+
+        <div class="col-md-6">
+            <br>
+            <label>Xpath to Product Filters Texts </label>
+            <input type="text" id="product_filters_texts" class="form-control" required />
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="col-md-12">
+    <br>
+    <hr>
+    <input type="submit" name="submit" class="btn btn-block btn-success" value="Add Store" />
+    </div>
+   
+
+</form>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+    
+</div>
+
+
+
+<script type="text/javascript">
+    
+    /*
+    $(document).ready(function(){
+        
+        alert('Document is Ready!!!')
+    })
+    */
+
+
+    $(document).on('submit', '#crawler_form', function(e){
+
+        e.preventDefault();
+
+        $.ajax({
+
+
+            type: 'POST',
+            url: '/addstore/',
+            data:{
+
+                website_name : $('#website_name').val(),
+                major_url : $('#major_url').val(),
+                relay_links : $('#relay_links').val(),
+                pagination_index : $('#pagination_index').val(),
+                product_url : $('#product_url').val(),
+                product_name : $('#product_name').val(),
+                product_seller : $('#product_seller').val(),
+                product_color : $('#product_color').val(),
+                product_current_price :$('#product_current_price').val(),
+                product_old_price :$('#product_old_price').val(),
+                product_categories :$('#product_categories').val(),
+                product_sizes :$('#product_sizes').val(),
+                product_percentage_off :$('#product_percentage_off').val(),
+                product_images :$('#product_images').val(),
+                product_description :$('#product_description').val(),
+                product_filters :$('#product_filters').val(),
+                product_filters_texts :$('#product_filters_texts').val(),
+                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+
+            },
+
+            success:function(){
+
+
+                swal({
+                  title: "Store Added Successfully!!!",
+                  text: "Store is Now Available for Crawling!",
+                  icon: "success",
+                  button: "Finish",
+                });
+
+                setTimeout( function(){ 
+                 // Go To Add Store after 3 secs 
+                window.location.replace('http://localhost:8000/addstore')               
+                }  , 3000);
+
+            },
+
+        });
+
+
+    });
+
+
+
+    $(document).ready(function(){
+
+    $("#website_name").change(function() {
+        // Find your different fields you want to populate and set the values here.
+        // Example would be 
+
+        var selectedStore = $("#website_name").val();
+
+        $.ajax({
+
+            type: 'POST',
+            url: '/getXpaths/',
+            data:{
+                website_name : $("#website_name").val(),
+                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+            },
+
+            success: function(data) {
+
+               var website_name;
+               var major;
+               var relay;
+               var pagination_index;
+               var product_url;
+               var product_name;
+               var product_seller;
+               var product_color;
+               var product_current_price;
+               var product_old_price;
+               var product_categories;
+               var product_sizes;
+               var product_off;
+               var product_images;
+               var product_description;
+
+               var i = 0
+
+               $.each(data, function(index){
+                    
+                    website_name = data[index][i][1];
+                    major = data[index][i][2];
+                    relay = data[index][i][3];
+                    pagination_index = data[index][i][6];
+                    product_url = data[index][i][7];
+                    product_name = data[index][i][8];
+                    product_seller = data[index][i][9];
+                    product_color = data[index][i][10];
+                    product_current_price = data[index][i][11];
+                    product_old_price = data[index][i][12];
+                    product_categories = data[index][i][13];
+                    product_sizes = data[index][i][14];
+                    product_off = data[index][i][15];
+                    product_images = data[index][i][16];
+                    product_description = data[index][i][17];                
+
+               });
+
+               $('#website_name').val(website_name);
+               $('#major_url').val(major);
+               $('#relay_links').val(relay);
+               $('#pagination_index').val(pagination_index);
+               $('#product_url').val(product_url);
+               $('#product_name').val(product_url);
+               $('#product_seller').val(product_seller);
+               $('#product_color').val(product_color);
+               $('#product_current_price').val(product_current_price);
+               $('#product_old_price').val(product_old_price);
+               $('#product_categories').val(product_categories);
+               $('#product_sizes').val(product_sizes);
+               $('#product_percentage_off').val(product_off);
+               $('#product_images').val(product_images);
+               $('#product_description').val(product_description);
+            },
+
+            error: function(data) {
+                alert("Error Message is : "+ data)
+            },
+
+
+        });
+
+
+        // if ($("#id_name").val() == "Some value") {
+        //     $("#id_command_prefix").val("Whatever you want to populate with.")
+        // }
+
+
+    });
+
+});
+
+
+</script>
+    
+{% endblock %}
