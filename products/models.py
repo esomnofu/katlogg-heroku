@@ -196,8 +196,8 @@ class Xpath(models.Model):
 	product_images = models.CharField(max_length=1500)
 	product_description = models.CharField(max_length=1500)
 	product_url = models.CharField(max_length=1500)
-	product_filters = models.CharField(max_length=1500)
-	product_filters_texts = models.CharField(max_length=1500)
+	product_filters = models.CharField(max_length=1500, default="//div[@class='i_do_not_exists']")
+	product_filters_texts = models.CharField(max_length=1500, default="//div[@class='i_do_not_exists']")
 
 
 
