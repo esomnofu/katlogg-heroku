@@ -97,17 +97,25 @@ from rest_framework import viewsets
 def index(request):
 
 	#Initialization of the Refresh our Crawler Calculation Index to Reflect Current Status of Ratings on Website Loaded
+
 	try:
 		neural_ntwk = searchnet('nn.db')
 		neural_ntwk.maketables()
 	except:
 		pass
 
-	page_rank = NeuralCrawler('searchindex.db')
-	#page_rank.createindextables()
+
+	try:
+		page_rank = NeuralCrawler('searchindex.db')
+		page_rank.createindextables()
+	except:
+		pass
+
+
+	page_rank.calculatepagerank()
+	
 
 	#Calling the Refresh Method
-	#page_rank.calculatepagerank()
 
 	#Start Process to get Products From Text File
 	#Start Process to get Products From Text File
