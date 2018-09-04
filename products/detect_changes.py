@@ -29,16 +29,18 @@ def news(arg, argz):
 
 	#To Get The Last File in Media Directory
 	path = arg
-	#print("Path is", path)
+	print("Path At Detect Changes is: ", path, " Directory added is /", argz)
 	#path = '/Users/DIAMONDSCRIPTS/Desktop/django/rest/media'
 
 	#Getting the last TXT Files
 	text_files = [f for f in os.listdir(path) if f.endswith('.txt')]
 	last = text_files[-1]
-	#print("Last File to pass is", last)
+	print("Last File to pass is", last)
 	
+	print(" Where we are finally looking at: ", os.path.join(arg, last))
 	#Loading the file up as a json so we can manipulate the Data
-	with open(os.path.join(settings.NON_STATIC_ROOT+argz, last)) as json_file:
+	with open(os.path.join(arg, last)) as json_file:
+	# with open(os.path.join(settings.NON_STATIC_ROOT+argz, last)) as json_file:
 		data = json.load(json_file)
 		for p in data['product']:
 
@@ -70,10 +72,12 @@ def news(arg, argz):
 				if product_sub_sub_categories == "donotaddtokatlogg":
 					each_table_row = Unidentified( product_name=product_name, product_seller=product_seller, product_old_price=product_old_price, product_current_price=product_current_price, product_url=product_url, product_categories=product_categories.split(','), product_valid_sizes=product_valid_sizes.split(), product_off=product_off, product_valid_images=product_valid_images.split(), product_images_urls=product_images_urls, product_store_name=product_store_name, product_gender=product_gender, product_sub_sub_categories=product_sub_sub_categories, product_color=product_color, product_description=product_description )
 					each_table_row.save()
+					print("Added to Unidentified Table...")
 
 				else:			
 					each_table_row = Product( product_name=product_name, product_seller=product_seller, product_old_price=product_old_price, product_current_price=product_current_price, product_url=product_url, product_categories=product_categories.split(','), product_valid_sizes=product_valid_sizes.split(), product_off=product_off, product_valid_images=product_valid_images.split(), product_images_urls=product_images_urls, product_store_name=product_store_name, product_gender=product_gender, product_sub_sub_categories=product_sub_sub_categories, product_color=product_color, product_description=product_description )
 					each_table_row.save()
+					print("Added to Products Table....")
 
 					news_item = News( product_name=product_name, product_seller=product_seller, product_old_price=product_old_price, product_current_price=product_current_price, product_url=product_url, product_categories=product_categories.split(','), product_valid_sizes=product_valid_sizes.split(), product_off=product_off, product_valid_images=product_valid_images.split(), product_images_urls=product_images_urls, product_store_name=product_store_name, product_gender=product_gender, product_sub_sub_categories=product_sub_sub_categories, product_color=product_color, product_description=product_description)
 					news_item.save()
