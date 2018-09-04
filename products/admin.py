@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, News, Ratings
+from .models import Product, News, Ratings, Xpath, Unidentified
 
 admin.site.register(Ratings)
 admin.site.register(Product)
