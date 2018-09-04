@@ -80,7 +80,9 @@ from .serializers import ProductSerializer
 from rest_framework import viewsets
 
 
-
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print("BAse DIrecToRy is: ", BASE_DIR)
 
 
 
@@ -273,10 +275,14 @@ def crawl(request):
 				
 
 				#Argument One to Feed The News Function in General.py
-				arg = os.path.join('/Users/DIAMONDSCRIPTS/Desktop/katlogg/products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
+				arg = os.path.join(BASE_DIR + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
+				print("arg Argument 1 is: ", arg)
+				
+				# arg = os.path.join('/Users/DIAMONDSCRIPTS/Desktop/katlogg/products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
 				
 				#Argument Two to Feed The News Function in General.py
 				argz = os.path.join('/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
+				print("argz Argzument 2 is: ", argz)
 
 				if not os.path.isfile(urls):
 					write_file(urls, '')
