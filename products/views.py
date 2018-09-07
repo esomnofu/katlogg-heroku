@@ -84,8 +84,9 @@ from rq import Queue
 
 from products.worker import conn
 
-
 from products.default import crawl_worker
+
+from products.utils import count_words_at_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -174,10 +175,17 @@ def index(request):
 
 def crawl(request):
 	q = Queue(connection=conn)
-	result = q.enqueue(crawl_worker, request)
+	result = q.enqueue(count_words_at_url, 'http://heroku.com')
 	print("Request Sent To Worker....")
 	print("results from worker is: ", result)
 	return render(request, 'products/news.html')
+
+
+	# q = Queue(connection=conn)
+	# result = q.enqueue(crawl_worker, request)
+	# print("Request Sent To Worker....")
+	# print("results from worker is: ", result)
+	# return render(request, 'products/news.html')
 
 	
 	# if request.method == 'POST':
@@ -899,13 +907,11 @@ def recommend(request):
 def getXpaths(request):
 	
 	if request.method == 'POST':
-		print("The Request is POST...")
 		name = request.POST['website_name'].strip()
 		correspondingData = XpathList.objects.filter(website_name=name).values_list()
 		#data = get_object_or_404(XpathList, website_name=name).values_list()
 		return JsonResponse({"output": list(correspondingData)})
 	else :
-		print("No Response")
 		return render('products/form.html', locals())
 
 
