@@ -85,48 +85,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
-def crawl_worker(request):
-	print("request gotten from master: ", request)
-	if request.method == 'POST':
-		website_name = request.POST['website_name']
-		website_name.strip()
-		major_url = request.POST['major_url']
-		major_url.strip()
-		relay_links = request.POST['relay_links']
-		relay_links.strip()
-		start_page_number = request.POST['start_page_number']
-		start_page_number.strip()
-		end_page_number = request.POST['end_page_number']
-		end_page_number.strip()
-		concatenation_pattern = request.POST['pagination_index']
-		concatenation_pattern.strip()
-		product_url = request.POST['product_url']
-		product_url.strip()
-		product_name = request.POST['product_name']
-		product_name.strip()
-		product_seller = request.POST['product_seller']
-		product_seller.strip()
-		product_color = request.POST['product_color']
-		product_color.strip()
-		product_current_price = request.POST['product_current_price']
-		product_current_price.strip()
-		product_old_price = request.POST['product_old_price']
-		product_old_price.strip()
-		product_categories = request.POST['product_categories']
-		product_categories.strip()
-		product_sizes = request.POST['product_sizes']
-		product_sizes.strip()
-		product_percentage_off = request.POST['product_percentage_off']
-		product_percentage_off.strip()
-		product_images = request.POST['product_images']
-		product_images.strip()
-		product_description = request.POST['product_description']
-		product_description.strip()
-		product_filters = request.POST['product_filters']
-		product_filters.strip()
-		product_filters_texts = request.POST['product_filters_texts']
-		product_filters_texts.strip()
+def crawl_worker(website_name, major_url, relay_links, start_page_number, end_page_number, concatenation_pattern, product_url, product_name, product_seller, product_color, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, product_filters, product_filters_texts):
 
+	print("request gotten from master: ", request)
+	if website_name != '':
+		
 		#Instantiate an Object of the Neural Class that will index all URLs and associated texts in its page
 
 		#Calling the HomeCrawler Class from the Index Module to get all Major Categories
