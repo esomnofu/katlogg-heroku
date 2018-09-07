@@ -82,7 +82,7 @@ from rest_framework import viewsets
 
 from rq import Queue
 
-from products.worker import conn
+from worker import conn
 
 from products.default import crawl_worker
 
