@@ -80,9 +80,15 @@ from .serializers import ProductSerializer
 from rest_framework import viewsets
 
 
+from rq import Queue
+
+from products.worker import conn
+
+from products.default import crawl_worker
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print("BAse DIrecToRy is: ", BASE_DIR)
+
 
 
 
@@ -166,332 +172,336 @@ def index(request):
 	return render(request, 'products/product.html', {'datum' : datum})
 
 def crawl(request):
+	result = q.enqueue(crawl_worker, request)
+	print("Request Sent To Worker....")
+	print("results from worker is: ", result)
+	return render(request, 'products/news.html')
 
 	
-	if request.method == 'POST':
-		website_name = request.POST['website_name']
-		website_name.strip()
-		major_url = request.POST['major_url']
-		major_url.strip()
-		relay_links = request.POST['relay_links']
-		relay_links.strip()
-		start_page_number = request.POST['start_page_number']
-		start_page_number.strip()
-		end_page_number = request.POST['end_page_number']
-		end_page_number.strip()
-		concatenation_pattern = request.POST['pagination_index']
-		concatenation_pattern.strip()
-		product_url = request.POST['product_url']
-		product_url.strip()
-		product_name = request.POST['product_name']
-		product_name.strip()
-		product_seller = request.POST['product_seller']
-		product_seller.strip()
-		product_color = request.POST['product_color']
-		product_color.strip()
-		product_current_price = request.POST['product_current_price']
-		product_current_price.strip()
-		product_old_price = request.POST['product_old_price']
-		product_old_price.strip()
-		product_categories = request.POST['product_categories']
-		product_categories.strip()
-		product_sizes = request.POST['product_sizes']
-		product_sizes.strip()
-		product_percentage_off = request.POST['product_percentage_off']
-		product_percentage_off.strip()
-		product_images = request.POST['product_images']
-		product_images.strip()
-		product_description = request.POST['product_description']
-		product_description.strip()
-		product_filters = request.POST['product_filters']
-		product_filters.strip()
-		product_filters_texts = request.POST['product_filters_texts']
-		product_filters_texts.strip()
+	# if request.method == 'POST':
+	# 	website_name = request.POST['website_name']
+	# 	website_name.strip()
+	# 	major_url = request.POST['major_url']
+	# 	major_url.strip()
+	# 	relay_links = request.POST['relay_links']
+	# 	relay_links.strip()
+	# 	start_page_number = request.POST['start_page_number']
+	# 	start_page_number.strip()
+	# 	end_page_number = request.POST['end_page_number']
+	# 	end_page_number.strip()
+	# 	concatenation_pattern = request.POST['pagination_index']
+	# 	concatenation_pattern.strip()
+	# 	product_url = request.POST['product_url']
+	# 	product_url.strip()
+	# 	product_name = request.POST['product_name']
+	# 	product_name.strip()
+	# 	product_seller = request.POST['product_seller']
+	# 	product_seller.strip()
+	# 	product_color = request.POST['product_color']
+	# 	product_color.strip()
+	# 	product_current_price = request.POST['product_current_price']
+	# 	product_current_price.strip()
+	# 	product_old_price = request.POST['product_old_price']
+	# 	product_old_price.strip()
+	# 	product_categories = request.POST['product_categories']
+	# 	product_categories.strip()
+	# 	product_sizes = request.POST['product_sizes']
+	# 	product_sizes.strip()
+	# 	product_percentage_off = request.POST['product_percentage_off']
+	# 	product_percentage_off.strip()
+	# 	product_images = request.POST['product_images']
+	# 	product_images.strip()
+	# 	product_description = request.POST['product_description']
+	# 	product_description.strip()
+	# 	product_filters = request.POST['product_filters']
+	# 	product_filters.strip()
+	# 	product_filters_texts = request.POST['product_filters_texts']
+	# 	product_filters_texts.strip()
 
-		#Instantiate an Object of the Neural Class that will index all URLs and associated texts in its page
+	# 	#Instantiate an Object of the Neural Class that will index all URLs and associated texts in its page
 
-		#Calling the HomeCrawler Class from the Index Module to get all Major Categories
-		crawler = HomeCrawler(website_name, major_url, relay_links)
-		crawler.crawl()
-
-
-		data = {}  
-		data['product'] = []  
-
-		faker = {}  
-		faker['product'] = []  
-
-		#Looping Through All the Major Categories Found
-		for category in crawler.categories:
-
-			#Fix For BAMBIANO
-			if category[-1:] is '/':
-				category = category[:-1]
-
-			cat_num = category.split('/')
-			#print('Category List', cat_num)
-
-			category_name = cat_num[-1]
-
-			#Replace Question marks with nothing as it impedes folder/file creation
-			category_name = category_name.replace('?', '')
+	# 	#Calling the HomeCrawler Class from the Index Module to get all Major Categories
+	# 	crawler = HomeCrawler(website_name, major_url, relay_links)
+	# 	crawler.crawl()
 
 
-			#Before we assume this category already exists lets check if it was completely crawled
-			#Before we assume this category already exists lets check if it was completely crawled
-			#Before we assume this category already exists lets check if it was completely crawled
-			#Before we assume this category already exists lets check if it was completely crawled
-			#Before we assume this category already exists lets check if it was completely crawled
+	# 	data = {}  
+	# 	data['product'] = []  
+
+	# 	faker = {}  
+	# 	faker['product'] = []  
+
+	# 	#Looping Through All the Major Categories Found
+	# 	for category in crawler.categories:
+
+	# 		#Fix For BAMBIANO
+	# 		if category[-1:] is '/':
+	# 			category = category[:-1]
+
+	# 		cat_num = category.split('/')
+	# 		#print('Category List', cat_num)
+
+	# 		category_name = cat_num[-1]
+
+	# 		#Replace Question marks with nothing as it impedes folder/file creation
+	# 		category_name = category_name.replace('?', '')
+
+
+	# 		#Before we assume this category already exists lets check if it was completely crawled
+	# 		#Before we assume this category already exists lets check if it was completely crawled
+	# 		#Before we assume this category already exists lets check if it was completely crawled
+	# 		#Before we assume this category already exists lets check if it was completely crawled
+	# 		#Before we assume this category already exists lets check if it was completely crawled
 			
-			if os.path.exists( os.path.join('products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name) ):
-				path = 'products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name
-				text_files = [f for f in os.listdir(path) if f.endswith('.txt')]
-				print("Nos of txt files are: ", len(text_files))
+	# 		if os.path.exists( os.path.join('products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name) ):
+	# 			path = 'products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name
+	# 			text_files = [f for f in os.listdir(path) if f.endswith('.txt')]
+	# 			print("Nos of txt files are: ", len(text_files))
 
-				nosOfFiles = len(text_files)
-				last = text_files[-1]
-				print("Last File is: ", last)
+	# 			nosOfFiles = len(text_files)
+	# 			last = text_files[-1]
+	# 			print("Last File is: ", last)
 
-				if nosOfFiles == 1 :
-					os.remove(path+'/'+last)
-					os.rmdir(path)
-					print("We removed file and directory...", path+"/"+last)
+	# 			if nosOfFiles == 1 :
+	# 				os.remove(path+'/'+last)
+	# 				os.rmdir(path)
+	# 				print("We removed file and directory...", path+"/"+last)
 
 
 
-			#Creating A Folder for every Category Under the Project Name which already bears the Timestamp of the Day
-			if not os.path.exists( os.path.join('products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name) ):
+	# 		#Creating A Folder for every Category Under the Project Name which already bears the Timestamp of the Day
+	# 		if not os.path.exists( os.path.join('products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name) ):
 			
 
 
-				#Creating a Folder For Each Category
-				os.makedirs(os.path.join('products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name) )
+	# 			#Creating a Folder For Each Category
+	# 			os.makedirs(os.path.join('products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name) )
 
 
-				print("Created Category: ", 'products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name)
+	# 			print("Created Category: ", 'products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name)
 
-		#Creating a File for All Links Found in a Category		
-				urls = os.path.join('products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name +'/'+category_name+'.txt')
+	# 	#Creating a File for All Links Found in a Category		
+	# 			urls = os.path.join('products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name +'/'+category_name+'.txt')
 				
 
-				#Argument One to Feed The News Function in General.py
-				arg = os.path.join(BASE_DIR +'/products/'+ crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
-				# print("arg Argument 1 is: ", arg)
+	# 			#Argument One to Feed The News Function in General.py
+	# 			arg = os.path.join(BASE_DIR +'/products/'+ crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
+	# 			# print("arg Argument 1 is: ", arg)
 				
-				# arg = os.path.join('/Users/DIAMONDSCRIPTS/Desktop/katlogg/products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
+	# 			# arg = os.path.join('/Users/DIAMONDSCRIPTS/Desktop/katlogg/products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
 				
-				#Argument Two to Feed The News Function in General.py
-				argz = os.path.join('/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
-				# print("argz Argzument 2 is: ", argz)
+	# 			#Argument Two to Feed The News Function in General.py
+	# 			argz = os.path.join('/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/')
+	# 			# print("argz Argzument 2 is: ", argz)
 
-				if not os.path.isfile(urls):
-					write_file(urls, '')
-
-
-					#Crawl Each Category Gotten From HomeCrawler With CategoryCrawler
-					if crawler.project == "delphimetals.com":
-						category = category + "?view=list"
-					crawl_each_category = CategoryCrawler(category, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts)
-					crawl_each_category.crawl()
+	# 			if not os.path.isfile(urls):
+	# 				write_file(urls, '')
 
 
-					if(len(crawl_each_category.filters) > 0):
+	# 				#Crawl Each Category Gotten From HomeCrawler With CategoryCrawler
+	# 				if crawler.project == "delphimetals.com":
+	# 					category = category + "?view=list"
+	# 				crawl_each_category = CategoryCrawler(category, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts)
+	# 				crawl_each_category.crawl()
+
+
+	# 				if(len(crawl_each_category.filters) > 0):
 						
-						fourth_layer_filters = ["Pet Supplies", "Pet Care Products", "Pet Toys and Accessories", "Pet Accessories", "Pet Food & Supplement", "Other operating systems", "All Brands", "Books, Movies & Music", "Stationery", "Art Craft and Sewing", "Temptations", "Exotic clothing , Adult Toys", "Plumbing Materials", "Building & Construction", "Home repairs", "Weddings", "Souvenirs"]
-						already_picked_from_fourth_layer_filters = []
-						for filter_url in crawl_each_category.filters:
+	# 					fourth_layer_filters = ["Pet Supplies", "Pet Care Products", "Pet Toys and Accessories", "Pet Accessories", "Pet Food & Supplement", "Other operating systems", "All Brands", "Books, Movies & Music", "Stationery", "Art Craft and Sewing", "Temptations", "Exotic clothing , Adult Toys", "Plumbing Materials", "Building & Construction", "Home repairs", "Weddings", "Souvenirs"]
+	# 					already_picked_from_fourth_layer_filters = []
+	# 					for filter_url in crawl_each_category.filters:
 
 						
-							each_filter_category = FilterCategoryCrawler(filter_url, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts)
-							each_filter_category.crawl()
-							set_to_file(each_filter_category.items, urls)							
-							matrix = NeuralCrawler('searchindex.db')
+	# 						each_filter_category = FilterCategoryCrawler(filter_url, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts)
+	# 						each_filter_category.crawl()
+	# 						set_to_file(each_filter_category.items, urls)							
+	# 						matrix = NeuralCrawler('searchindex.db')
 
-							#{'kids-bath': "Kids' Bath", 'kids-furniture': "Kids' Furniture", 'kids-room-decor': "Kids' Room Decor"}
-							# {'http://konga.com/kids-furniture', 'http://konga.com/kids-bath', 'http://konga.com/kids-room-decor'}
+	# 						#{'kids-bath': "Kids' Bath", 'kids-furniture': "Kids' Furniture", 'kids-room-decor': "Kids' Room Decor"}
+	# 						# {'http://konga.com/kids-furniture', 'http://konga.com/kids-bath', 'http://konga.com/kids-room-decor'}
 
-							#print("Additional Fourth Layer url texts are: ", each_filter_category.fourth_layer_urls_texts)
-							#print("Additional Fourth Layer urls are: ", each_filter_category.fourth_layer_urls)
+	# 						#print("Additional Fourth Layer url texts are: ", each_filter_category.fourth_layer_urls_texts)
+	# 						#print("Additional Fourth Layer urls are: ", each_filter_category.fourth_layer_urls)
 
-							#So we can do a check and see if any of them is in our fourth_layer_filters - then if there is a match
-							#We can find a way to add that url among the ones we are crawling
+	# 						#So we can do a check and see if any of them is in our fourth_layer_filters - then if there is a match
+	# 						#We can find a way to add that url among the ones we are crawling
 							
-							#This Crawls the Fourth Layer and Returns Parameters needed for the Fifth
-							response_for_fifth = check_fourth_or_fifth_layer(each_filter_category.fourth_layer_urls_texts, each_filter_category.fourth_layer_urls, fourth_layer_filters, already_picked_from_fourth_layer_filters, urls, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, data, faker, arg, argz, crawler.project, category_name)
+	# 						#This Crawls the Fourth Layer and Returns Parameters needed for the Fifth
+	# 						response_for_fifth = check_fourth_or_fifth_layer(each_filter_category.fourth_layer_urls_texts, each_filter_category.fourth_layer_urls, fourth_layer_filters, already_picked_from_fourth_layer_filters, urls, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, data, faker, arg, argz, crawler.project, category_name)
 							
-							print("RESPONSE FOR FIFTH :- ", response_for_fifth)
-							if(response_for_fifth != None):
+	# 						print("RESPONSE FOR FIFTH :- ", response_for_fifth)
+	# 						if(response_for_fifth != None):
 
 
-								#Numerous Fifth Layers Are Supplied - We Iterate all Crawl those we need ---- We Crawl Fifth Layer and Thats All...
-								for each_new in response_for_fifth:
-									for fifth_layer_urls , fifth_layer_texts in each_new.items():
-										#Key was converted to string we unconvert back to set
-										#Value wasn't we pass like that
-										fifth_layer_urls_set = ast.literal_eval(fifth_layer_urls)
-										response_for_sixth = check_fourth_or_fifth_layer(fifth_layer_texts, fifth_layer_urls_set, fourth_layer_filters, already_picked_from_fourth_layer_filters, urls, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, data, faker, arg, argz, crawler.project, category_name)
+	# 							#Numerous Fifth Layers Are Supplied - We Iterate all Crawl those we need ---- We Crawl Fifth Layer and Thats All...
+	# 							for each_new in response_for_fifth:
+	# 								for fifth_layer_urls , fifth_layer_texts in each_new.items():
+	# 									#Key was converted to string we unconvert back to set
+	# 									#Value wasn't we pass like that
+	# 									fifth_layer_urls_set = ast.literal_eval(fifth_layer_urls)
+	# 									response_for_sixth = check_fourth_or_fifth_layer(fifth_layer_texts, fifth_layer_urls_set, fourth_layer_filters, already_picked_from_fourth_layer_filters, urls, start_page_number, end_page_number, concatenation_pattern, product_url, product_filters, product_filters_texts, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, data, faker, arg, argz, crawler.project, category_name)
 							
-							#Move on with the Rest of the Code
+	# 						#Move on with the Rest of the Code
 
-							for item in each_filter_category.items:
-							# for item in list(each_filter_category.items)[:10]:
-							# for item in list(each_filter_category.items)[:5]:
-								#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
-								#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
-								#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
+	# 						for item in each_filter_category.items:
+	# 						# for item in list(each_filter_category.items)[:10]:
+	# 						# for item in list(each_filter_category.items)[:5]:
+	# 							#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
+	# 							#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
+	# 							#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
 								
 
-								#matrix.crawl(item)
+	# 							#matrix.crawl(item)
 								
 
 
-								#End of Neural Functionality
-								#End of Neural Functionality
-								#End of Neural Functionality
+	# 							#End of Neural Functionality
+	# 							#End of Neural Functionality
+	# 							#End of Neural Functionality
 
-								#Possibly Fix for Jumia and Ajebo
-								if ( website_name == "https://www.konga.com/"):
-									actual_filter_names = filter_url.split('/')
-									product_sub_sub_categories = actual_filter_names[-1]
-								else:
-									if crawler.project == "delphimetals.com":
-										product_sub_sub_categories = filter_url[24:]
-									else:
-										product_sub_sub_categories = filter_url
+	# 							#Possibly Fix for Jumia and Ajebo
+	# 							if ( website_name == "https://www.konga.com/"):
+	# 								actual_filter_names = filter_url.split('/')
+	# 								product_sub_sub_categories = actual_filter_names[-1]
+	# 							else:
+	# 								if crawler.project == "delphimetals.com":
+	# 									product_sub_sub_categories = filter_url[24:]
+	# 								else:
+	# 									product_sub_sub_categories = filter_url
 							
-								sub_sub = crawl_each_category.filters_texts[product_sub_sub_categories]
-								product_info = DetailCrawler(item, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, sub_sub)
-								product_info.product_detail()
+	# 							sub_sub = crawl_each_category.filters_texts[product_sub_sub_categories]
+	# 							product_info = DetailCrawler(item, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, sub_sub)
+	# 							product_info.product_detail()
 
 
-								for items in product_info.items:
-									data['product'].append(items)
-									faker['product'].append(items)
-									#time.sleep(5)
+	# 							for items in product_info.items:
+	# 								data['product'].append(items)
+	# 								faker['product'].append(items)
+	# 								#time.sleep(5)
 
-							the_url = os.path.join('products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name +'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
-							if not os.path.isfile(the_url):
-								print('Created Dictionary Object Information File :',  crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
-								write_file(the_url, '')
+	# 						the_url = os.path.join('products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name +'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
+	# 						if not os.path.isfile(the_url):
+	# 							print('Created Dictionary Object Information File :',  crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
+	# 							write_file(the_url, '')
 
-							with open(the_url, 'w' ) as outfile:
-								json.dump(faker, outfile)
+	# 						with open(the_url, 'w' ) as outfile:
+	# 							json.dump(faker, outfile)
 							
-							#We call the news function to work on the newly created product object file and add it to Mysql Product and News Database
-							#And also add any product that has altered in attributes(i.e Price) to the News Table
-							#The News Function Handles all these for us
-							news(arg, argz)
+	# 						#We call the news function to work on the newly created product object file and add it to Mysql Product and News Database
+	# 						#And also add any product that has altered in attributes(i.e Price) to the News Table
+	# 						#The News Function Handles all these for us
+	# 						news(arg, argz)
 
-							#The Set is Cleared after each Category is crawled and saved to file
-							each_filter_category.items.clear()
+	# 						#The Set is Cleared after each Category is crawled and saved to file
+	# 						each_filter_category.items.clear()
 
-							#The Set is Cleared after each Full Product Information is crawled and saved to file
-							try:
-								product_info.items.clear()
-							except:
-								pass
+	# 						#The Set is Cleared after each Full Product Information is crawled and saved to file
+	# 						try:
+	# 							product_info.items.clear()
+	# 						except:
+	# 							pass
 
-							faker = {}  
-							faker['product'] = []
+	# 						faker = {}  
+	# 						faker['product'] = []
 
 						
 							
 
 
-					#WE RUN ELSE BLOCK IF - THE CURRENT PRODUCT CATEGORY DOESN'T HAVE FILTERS
-					else:	
-						print("This Store doesnt have filters...")						
-						#All the Links Stored in the Set Per Category Are Written to the File bearing the Category Name
-						#set_to_file(list(crawl_each_category.items)[:40], urls)
-						set_to_file(crawl_each_category.items, urls)
+	# 				#WE RUN ELSE BLOCK IF - THE CURRENT PRODUCT CATEGORY DOESN'T HAVE FILTERS
+	# 				else:	
+	# 					print("This Store doesnt have filters...")						
+	# 					#All the Links Stored in the Set Per Category Are Written to the File bearing the Category Name
+	# 					#set_to_file(list(crawl_each_category.items)[:40], urls)
+	# 					set_to_file(crawl_each_category.items, urls)
 
-						#After Adding Each Links Per Category to File, Its time to get their Full Detail and Add to File Too
+	# 					#After Adding Each Links Per Category to File, Its time to get their Full Detail and Add to File Too
 						
-						matrix = NeuralCrawler('searchindex.db')
+	# 					matrix = NeuralCrawler('searchindex.db')
 
-						#for item in list(crawl_each_category.items)[:40]:
-						for item in crawl_each_category.items:
-						# for item in list(crawl_each_category.items)[:10]:
+	# 					#for item in list(crawl_each_category.items)[:40]:
+	# 					for item in crawl_each_category.items:
+	# 					# for item in list(crawl_each_category.items)[:10]:
 
-							#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
-							#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
-							#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
-							matrix.crawl(item)
-							#End of Neural Functionality
-							#End of Neural Functionality
-							#End of Neural Functionality
+	# 						#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
+	# 						#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
+	# 						#Let Us Index and Add Each Info From All Products Category to our Neural Network Databases Before Getting their Full Info With our DetailCrawler
+	# 						matrix.crawl(item)
+	# 						#End of Neural Functionality
+	# 						#End of Neural Functionality
+	# 						#End of Neural Functionality
 
-							product_info = DetailCrawler(item, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, "")
-							product_info.product_detail()
+	# 						product_info = DetailCrawler(item, product_name, product_color, product_seller, product_current_price, product_old_price, product_categories, product_sizes, product_percentage_off, product_images, product_description, "")
+	# 						product_info.product_detail()
 
 
-							for items in product_info.items:
-								data['product'].append(items)
-								faker['product'].append(items)
-								#time.sleep(5)
+	# 						for items in product_info.items:
+	# 							data['product'].append(items)
+	# 							faker['product'].append(items)
+	# 							#time.sleep(5)
 
-						the_url = os.path.join('products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name +'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
-						if not os.path.isfile(the_url):
-							print('Category Completely Crawled :',  crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
-							write_file(the_url, '')
+	# 					the_url = os.path.join('products/' + crawler.project+' - '+str(datetime.date.today())+'/'+category_name +'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
+	# 					if not os.path.isfile(the_url):
+	# 						print('Category Completely Crawled :',  crawler.project+' - '+str(datetime.date.today())+'/'+category_name+'/'+category_name+'_products_'+category_name+'_'+str(datetime.date.today())+'.txt')
+	# 						write_file(the_url, '')
 
-						with open(the_url, 'w' ) as outfile:
-							json.dump(faker, outfile)
+	# 					with open(the_url, 'w' ) as outfile:
+	# 						json.dump(faker, outfile)
 						
-						#We call the news function to work on the newly created product object file and add it to Mysql Product and News Database
-						#And also add any product that has altered in attributes(i.e Price) to the News Table
-						#The News Function Handles all these for us
-						news(arg, argz)
+	# 					#We call the news function to work on the newly created product object file and add it to Mysql Product and News Database
+	# 					#And also add any product that has altered in attributes(i.e Price) to the News Table
+	# 					#The News Function Handles all these for us
+	# 					news(arg, argz)
 
-						#The Set is Cleared after each Category is crawled and saved to file
-						crawl_each_category.items.clear()
+	# 					#The Set is Cleared after each Category is crawled and saved to file
+	# 					crawl_each_category.items.clear()
 
-						#The Set is Cleared after each Full Product Information is crawled and saved to file
-						try:
-							product_info.items.clear()
-						except:
-							pass
+	# 					#The Set is Cleared after each Full Product Information is crawled and saved to file
+	# 					try:
+	# 						product_info.items.clear()
+	# 					except:
+	# 						pass
 
-						faker = {}  
-						faker['product'] = []  
+	# 					faker = {}  
+	# 					faker['product'] = []  
 						
 
-				else:
-					print('Sorry File :', urls, 'Already Exists')
+	# 			else:
+	# 				print('Sorry File :', urls, 'Already Exists')
 
-			else:
-				path = 'products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name
-				text_files = [f for f in os.listdir(path) if f.endswith('.txt')]
-				print("Nos of txt files are: ", len(text_files))
+	# 		else:
+	# 			path = 'products/' +crawler.project+' - '+str(datetime.date.today())+'/'+category_name
+	# 			text_files = [f for f in os.listdir(path) if f.endswith('.txt')]
+	# 			print("Nos of txt files are: ", len(text_files))
 
-				nosOfFiles = len(text_files)
-				last = text_files[-1]
-				print("Last File is: ", last)
+	# 			nosOfFiles = len(text_files)
+	# 			last = text_files[-1]
+	# 			print("Last File is: ", last)
 
-				if nosOfFiles == 1 :
-					os.remove(path+'/'+last)
-					os.rmdir(path)
-					print("We removed file and directory...")
-				print('Sorry Category Folder :', crawler.project+' - '+str(datetime.date.today())+'/'+category_name, 'Already Exists')
+	# 			if nosOfFiles == 1 :
+	# 				os.remove(path+'/'+last)
+	# 				os.rmdir(path)
+	# 				print("We removed file and directory...")
+	# 			print('Sorry Category Folder :', crawler.project+' - '+str(datetime.date.today())+'/'+category_name, 'Already Exists')
 				
 
-		ans = get_full_domain_name(website_name)
+	# 	ans = get_full_domain_name(website_name)
 
-		if ans == "ng.fashpa.com":
-			each_project = "ng.fashpa.com"
-		else:
-			each_project = get_domain_name(website_name)
+	# 	if ans == "ng.fashpa.com":
+	# 		each_project = "ng.fashpa.com"
+	# 	else:
+	# 		each_project = get_domain_name(website_name)
 
 		
 
-		randomStr = randint(123456, 989121)
-		final_url = os.path.join('media/products_all_categories_objects_for_' + str(each_project) +'_'+ str(randomStr) +'_'+ str(datetime.date.today())+'.txt')
-		if not os.path.isfile(final_url):
-			print('Completed Crawling of this Store :',  'media/products_all_categories_objects_for_' + str(datetime.date.today())+'.txt' ) 
-			write_file(final_url, '')
-		with open(final_url, 'w') as outfile:
-			json.dump(data, outfile)
-	return render(request, 'products/news.html')
+	# 	randomStr = randint(123456, 989121)
+	# 	final_url = os.path.join('media/products_all_categories_objects_for_' + str(each_project) +'_'+ str(randomStr) +'_'+ str(datetime.date.today())+'.txt')
+	# 	if not os.path.isfile(final_url):
+	# 		print('Completed Crawling of this Store :',  'media/products_all_categories_objects_for_' + str(datetime.date.today())+'.txt' ) 
+	# 		write_file(final_url, '')
+	# 	with open(final_url, 'w') as outfile:
+	# 		json.dump(data, outfile)
+	# return render(request, 'products/news.html')
 
 
 def search(request):
