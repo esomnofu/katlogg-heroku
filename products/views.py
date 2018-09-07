@@ -86,7 +86,7 @@ from products.worker import conn
 
 from products.default import crawl_worker
 
-from products.utils import count_words_at_url
+from products.initiator import count_words_at_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -175,7 +175,8 @@ def index(request):
 
 def crawl(request):
 	q = Queue(connection=conn)
-	result = q.enqueue(count_words_at_url, 'http://heroku.com')
+	website_name = request.POST['website_name']
+	result = q.enqueue(count_words_at_url, website_name)
 	print("Request Sent To Worker....")
 	print("results from worker is: ", result)
 	return render(request, 'products/news.html')

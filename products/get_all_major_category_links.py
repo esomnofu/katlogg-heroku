@@ -69,7 +69,7 @@ class HomeCrawler(object):
 			# time.sleep(30)
 			tree = html.fromstring(start_page.content, parser=html.HTMLParser(encoding="utf-8"))
 			names = tree.xpath(self.major_url)
-			# print("Major Categories are: ", names)
+			print("Major Categories are: ", names)
 			for name in names:
 				#Fix For DelphiMetals
 				if ('http' not in name) and (self.project not in name):
