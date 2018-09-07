@@ -84,6 +84,7 @@ from rq import Queue
 
 from products.worker import conn
 
+
 from products.default import crawl_worker
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -172,6 +173,7 @@ def index(request):
 	return render(request, 'products/product.html', {'datum' : datum})
 
 def crawl(request):
+	q = Queue(connection=conn)
 	result = q.enqueue(crawl_worker, request)
 	print("Request Sent To Worker....")
 	print("results from worker is: ", result)
