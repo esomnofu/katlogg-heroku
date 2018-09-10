@@ -4,8 +4,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.http import JsonResponse
 import json
 import os
-# from django.conf import settings
-export DJANGO_SETTINGS_MODULE=catalogue.settings
+from django.conf import settings
 
 #Paginator Module
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
