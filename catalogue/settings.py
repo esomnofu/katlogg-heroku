@@ -93,7 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'katlogg',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'anacsunamoon',
         'HOST': 'localhost',
         'PORT': '',
     }
