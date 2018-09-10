@@ -1,14 +1,11 @@
 import pymysql
 
-pymysql.install_as_MySQLdb()
+# pymysql.install_as_MySQLdb()
 
 import os
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", __file__)
-# import django
-# django.setup()
-# import django
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "catalogue.settings")
-# django.setup()
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "catalogue.settings")
+django.setup()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -72,16 +69,16 @@ WSGI_APPLICATION = 'catalogue.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'katlogg',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'katlogg',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 import dj_database_url
 

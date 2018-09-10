@@ -80,9 +80,7 @@ from .serializers import ProductSerializer
 from rest_framework import viewsets
 
 
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "catalogue.settings")
-django.setup()
+
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
