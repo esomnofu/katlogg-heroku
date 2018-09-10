@@ -84,16 +84,16 @@ WSGI_APPLICATION = 'catalogue.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'katlogg',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'katlogg',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 import dj_database_url
 
