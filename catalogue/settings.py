@@ -1,23 +1,17 @@
 import pymysql
 
-# pymysql.install_as_MySQLdb()
+pymysql.install_as_MySQLdb()
 
 import os
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "catalogue.settings")
-django.setup()
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'oq^7+y!d2uj)13h1u_$8#7evk_r*z5_)l!up92_7@o)xtt^zus'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['mysterious-retreat-54091.herokuapp.com']
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Application definition
 
@@ -133,7 +127,9 @@ STATICFILES_DIRS = (
 NON_STATIC_ROOT = os.path.join(BASE_DIR, 'products')
 
 
-
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "catalogue.settings")
+django.setup()
 
 '''
 REST_FRAMEWORK = {

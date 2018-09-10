@@ -79,9 +79,6 @@ from .serializers import ProductSerializer
 #Import Required From New Tutorial still on API CALLS
 from rest_framework import viewsets
 
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "catalogue.settings")
-django.setup()
 
 
 
